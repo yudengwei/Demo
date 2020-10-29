@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+fillAfter : 结束时动画是否停留在结束位置
+-->
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="5000"
+    android:fillAfter="true">
+
+    <alpha android:fromAlpha="0.0"
+        android:toAlpha="1.0" />
+</set>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MySplitEditText">
+        <attr name="itemBorderColor" format="color|reference"/>
+        <attr name="itemBorderWidth" format="dimension" />
+        <attr name="textLength" format="integer" />
+        <attr name="spacing" format="dimension" />
+        <attr name="contentSize" format="dimension" />
+        <attr name="contentColor" format="color|reference" />
+        <attr name="cursorWidth" format="dimension" />
+        <attr name="cursorColor" format="color|reference" />
+        <attr name="currentItemColor" format="color|reference" />
+    </declare-styleable>
+</resources>
