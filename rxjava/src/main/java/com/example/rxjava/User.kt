@@ -1,3 +1,3 @@
 package com.example.rxjava
 
-data class User(val name : String,val age : Int)
+data class User(var name : String,val age : Int)
