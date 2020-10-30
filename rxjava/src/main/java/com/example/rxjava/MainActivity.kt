@@ -705,11 +705,4 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun test1() {
-        // 2020-10-30 15:16:46.220 21489-21489/com.example.rxjava D/ABiao: User(name=2, age=1)
-        val just = Observable.just(1)
-        just.subscribe { it ->
-            it++
-        }
-    }
 }
