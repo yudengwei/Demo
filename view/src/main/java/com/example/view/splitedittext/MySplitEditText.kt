@@ -1,17 +1,17 @@
-package com.example.demo
+package com.example.view.splitedittext
 
 import android.content.Context
 import android.content.res.TypedArray
 import android.graphics.*
-import android.os.Build
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
 import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
-import android.widget.TextView
 import androidx.appcompat.widget.AppCompatEditText
+import com.example.base.util.UiUtil
+import com.example.view.R
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
@@ -101,9 +101,11 @@ class MySplitEditText @JvmOverloads constructor(context: Context,attributeSet: A
     }
 
     private fun initResource(attributeSet: AttributeSet?){
-        val typearry = context.obtainStyledAttributes(attributeSet,R.styleable.MySplitEditText)
+        val typearry = context.obtainStyledAttributes(attributeSet, R.styleable.MySplitEditText)
         mTextLength = typearry.getInteger(R.styleable.MySplitEditText_textLength,6)
-        mSpacing = typearry.getDimension(R.styleable.MySplitEditText_spacing,UiUtil.dp2px(resources,20f))
+        mSpacing = typearry.getDimension(
+            R.styleable.MySplitEditText_spacing,
+            UiUtil.dp2px(resources,20f))
         initItemPaint(typearry)
         initContentPaint(typearry)
         initCursorPaint(typearry)
@@ -112,7 +114,9 @@ class MySplitEditText @JvmOverloads constructor(context: Context,attributeSet: A
 
     private fun initItemPaint(typearry : TypedArray){
         mItemBorderColor = typearry.getColor(R.styleable.MySplitEditText_itemBorderColor, Color.BLACK)
-        mItemBorderWidth = typearry.getDimension(R.styleable.MySplitEditText_itemBorderWidth,UiUtil.dp2px(resources,1f))
+        mItemBorderWidth = typearry.getDimension(
+            R.styleable.MySplitEditText_itemBorderWidth,
+            UiUtil.dp2px(resources,1f))
         mCurrentItemColor = typearry.getColor(R.styleable.MySplitEditText_currentItemColor,Color.BLUE)
         mItemBorderPaint.color = mItemBorderColor
         mItemBorderPaint.strokeWidth = mItemBorderWidth
@@ -120,14 +124,18 @@ class MySplitEditText @JvmOverloads constructor(context: Context,attributeSet: A
 
     private fun initContentPaint(typearry: TypedArray){
         mContentColor = typearry.getColor(R.styleable.MySplitEditText_contentColor,Color.BLACK)
-        mContentSize = typearry.getDimension(R.styleable.MySplitEditText_contentSize,UiUtil.sp2px(resources,25f))
+        mContentSize = typearry.getDimension(
+            R.styleable.MySplitEditText_contentSize,
+            UiUtil.sp2px(resources,25f))
         mContentPaint.color = mContentColor
         mContentPaint.textSize = mContentSize
     }
 
     private fun initCursorPaint(typearry: TypedArray){
         mCursorColor = typearry.getColor(R.styleable.MySplitEditText_cursorColor,Color.BLACK)
-        mCursorWidth = typearry.getDimension(R.styleable.MySplitEditText_cursorWidth,UiUtil.dp2px(resources,1f))
+        mCursorWidth = typearry.getDimension(
+            R.styleable.MySplitEditText_cursorWidth,
+            UiUtil.dp2px(resources,1f))
         mCursorPaint.color = mContentColor
         mCursorPaint.strokeWidth = mCursorWidth
     }
@@ -135,7 +143,7 @@ class MySplitEditText @JvmOverloads constructor(context: Context,attributeSet: A
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val measureWidth = MeasureSpec.getSize(widthMeasureSpec)
         val allSpacing = mSpacing * (mTextLength-1)
-        val realWidth = measureWidth - allSpacing - mTextLength * mItemBorderWidth * 2 - paddingStart - paddingEnd
+        val realWidth = measureWidth - allSpacing - mTextLength * mItemBorderWidth * 2 - paddingLeft - paddingRight
         mItemWidth = realWidth / mTextLength
         setMeasuredDimension(measureWidth,( mItemWidth + mItemBorderWidth * 2).toInt())
     }
@@ -198,7 +206,7 @@ class MySplitEditText @JvmOverloads constructor(context: Context,attributeSet: A
     }
 
     private fun getItemStartX(index : Int) : Float{
-        return index * mItemWidth + index * mSpacing + paddingStart + mItemBorderWidth
+        return index * mItemWidth + index * mSpacing + paddingLeft + mItemBorderWidth
     }
 
     private fun getTextBaseline(paint : Paint,cy : Float) : Float {

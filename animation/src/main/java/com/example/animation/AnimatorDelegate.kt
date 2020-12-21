@@ -1,4 +1,4 @@
-package com.example.demo
+package com.example.animation
 
 import android.animation.AnimatorSet
 import android.content.Context

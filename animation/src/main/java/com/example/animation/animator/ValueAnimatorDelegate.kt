@@ -1,14 +1,9 @@
-package com.example.demo.animator
+package com.example.animation.animator
 
-import android.animation.Animator
 import android.animation.ValueAnimator
-import android.content.Context
 import android.graphics.PathMeasure
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.View
-import android.view.animation.Animation
-import kotlin.properties.Delegates
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 

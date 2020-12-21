@@ -1,4 +1,4 @@
-package com.example.demo.animator
+package com.example.animation.animator
 
 import android.graphics.Path
 import androidx.annotation.FloatRange

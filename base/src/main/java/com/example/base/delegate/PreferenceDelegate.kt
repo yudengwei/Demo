@@ -1,4 +1,4 @@
-package com.example.demo
+package com.example.base.delegate
 
 import android.content.Context
 import android.content.SharedPreferences

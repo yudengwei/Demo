@@ -1,23 +1,25 @@
 package com.example.demo
 
-import android.Manifest
-import android.content.ContentUris
-import android.content.Intent
-import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
+import android.animation.Animator
 import android.os.Bundle
-import android.os.Environment
-import android.provider.MediaStore
 import android.util.Log
-import android.view.animation.Animation
-import android.widget.Toast
-import androidx.core.content.ContextCompat
-import com.example.demo.animator.ValueAnimatorDelegate
+import android.view.View
+import android.view.ViewGroup
+import android.view.animation.*
+import android.widget.FrameLayout
+import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
+import com.example.PathUtils
+import com.example.animation.ViewAnimationSet
+import com.example.base.util.UiUtil
 import kotlinx.android.synthetic.main.activity_main.*
-import java.io.File
-import java.io.FileWriter
+import java.sql.Time
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var bubbleLayout: ViewGroup
+
 
     companion object{
         const val TAG = "MainActivity"
@@ -27,64 +29,182 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        mBtnCreate.setOnClickListener {
-            write11()
-            //jump()
-            /*if(checkPermission()) {
-                write()
-            }*/
+        bubbleLayout = findViewById<FrameLayout>(R.id.animation_heart)
+        bubbleLayout.setLayerType(View.LAYER_TYPE_HARDWARE, null)
+    }
+
+    fun onDialog(view: View) {
+        bubbleLayout.removeAllViews()
+        for (animator in animators) {
+            animator.cancel()
         }
+        animators.clear()
+        timer = Timer()
+        timer?.schedule(object : TimerTask() {
+            override fun run() {
+                bubbleLayout.post { addHeart() }
+            }
+        }, 0, 200)
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        if (requestCode == 1 && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            write()
-        }
+    fun onShake(view: View) {
+        ViewAnimationSet.animator(view, animation_image)
+            .rollIn()
+            .duration(1000 * 5)
+            .interpolator(AccelerateDecelerateInterpolator())
+            .interpolator(AccelerateInterpolator())
+                //一直匀速显示
+            .interpolator(LinearInterpolator())
+                //开始快后面慢
+            .interpolator(DecelerateInterpolator())
+                //开始有个往后甩的动作，再正常开始
+            .interpolator(AnticipateInterpolator())
+                //开始有个往后甩的动作，结束时有个往前甩的动作，再到结束的地方
+            .interpolator(AnticipateOvershootInterpolator())
+                //结束时往前甩，再回到结束的地方
+            .interpolator(OvershootInterpolator())
+                //结束时会回弹几次
+            .interpolator(BounceInterpolator())
+                //循环播放数次
+            .interpolator(CycleInterpolator(5f))
+            .start()
     }
 
-    private fun checkPermission() : Boolean{
-        if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
-            return false
-        }
-        return true
+    fun onBounce(view: View) {
+        ViewAnimationSet.animator(view, animation_image)
+            .bounce()
+            .start()
     }
 
-    private fun write() {
-        val filePath = Environment.getExternalStoragePublicDirectory("").toString() + "/test.txt"
-        val fw = FileWriter(filePath)
-        fw.write("阿彪好帅123")
-        fw.close()
-        Toast.makeText(this,"写入成功",Toast.LENGTH_SHORT).show()
+
+    fun onBounceIn(view: View) {
+        ViewAnimationSet.animator(view, animation_image)
+            .bounceIn()
+            .start()
     }
 
-    private fun write11() {
-        val file = File(filesDir,"a.text")
-        val file1 = File(getExternalFilesDir(""),"b1.txt")
-        Log.d("ABiao","path: "+file1.absolutePath)
-        val fw = FileWriter(file1.absoluteFile)
-        fw.write("123")
-        fw.close()
-        Toast.makeText(this,"写入成功",Toast.LENGTH_SHORT).show()
+    fun onBounceOut(view: View) {
+        ViewAnimationSet.animator(view, animation_image)
+            .bounceOut()
+            .start()
     }
 
-    private fun jump() {
-        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
-        intent.addCategory(Intent.CATEGORY_OPENABLE)
-        intent.type = "*/*"
-        startActivityForResult(intent, 1)
+    fun onFlash(view: View) {
+
     }
 
-    private fun getImage() {
-        //val cursor = contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,)
+    fun onFlipHorizontal(view: View) {
+
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode != 1 || data == null || resultCode != RESULT_OK) {
+    fun onFlipVertical(view: View) {
+
+    }
+
+    fun onWave(view: View) {
+        ViewAnimationSet.animator(animation_image)
+            .wave()
+            .duration(5000)
+            .start()
+    }
+
+    fun onTada(view: View) {
+
+    }
+
+    fun onPulse(view: View) {
+
+    }
+
+    fun onStandUp(view: View) {
+
+    }
+
+    fun onSwing(view: View) {
+
+    }
+
+    fun onWobble(view: View) {
+
+    }
+
+    fun onFall(view: View) {
+
+    }
+
+    fun onNewsPaper(view: View) {
+
+    }
+
+    fun onSlit(view: View) {
+
+    }
+
+    fun onSlideLeftIn(view: View) {
+
+    }
+
+    fun onSlideRightIn(view: View) {
+
+    }
+
+    fun onSlideTopIn(view: View) {
+
+    }
+
+    fun onZoomIn(view: View) {
+
+    }
+
+    fun onRollIn(view: View) {
+
+    }
+
+    fun onFadeIn(view: View) {
+
+    }
+
+    fun onRubber(view: View) {
+
+    }
+
+    fun onPath(view: View) {
+
+    }
+
+    fun onSvgPath(view: View) {
+
+    }
+
+    fun onFollower(view: View) {
+
+    }
+
+    var animators: ArrayList<ViewAnimationSet> = ArrayList()
+    var timer: Timer? = null
+
+    fun onBubble(view: View?) {
+
+    }
+
+    private fun addHeart() {
+        val metrics = UiUtil.displayMetrics(this)
+        if (animators.size == 50) {
+            timer?.cancel()
+            timer = null
             return
         }
-        val uri = data.data
-        Log.d("ABiao","uri: $uri")
+        val imageView = ImageView(this)
+        imageView.scaleType = ImageView.ScaleType.MATRIX
+        imageView.setImageResource(R.mipmap.heart)
+        bubbleLayout.addView(imageView)
+        val builder = ViewAnimationSet.animator(imageView)
+        builder.path(PathUtils.createBubble(metrics.widthPixels, metrics.heightPixels))
+        builder.fadeOut()
+        builder.duration(5000)
+        builder.repeatCount(Animation.INFINITE)
+        builder.interpolator(LinearInterpolator())
+        val animator= builder.start()
+        animators.add(animator)
     }
 }
