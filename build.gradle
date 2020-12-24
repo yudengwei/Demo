@@ -3,6 +3,14 @@ buildscript {
     ext.kotlin_version = "1.3.72"
     ext.compile_sdk_version = 30
     ext.min_sdk_version = 21
+    ext.lifecycleVersion = '2.2.0'
+    ext.pagingVersion = '2.1.2'
+    ext.gsonVersion = '2.8.2'
+    ext.glideVersion = '4.9.0'
+    ext.trasnVersion = "4.0.1"
+    ext.smartVersion = '2.0.1'
+    ext.roomVersion = '2.2.5'
+    ext.workVersion = '2.4.0'
     repositories {
         google()
         jcenter()
