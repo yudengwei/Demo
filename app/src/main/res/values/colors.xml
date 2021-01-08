@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
+    <color name="left_tv_checked_color">#0068cf</color>
+    <color name="left_tv_unchecked_color">#1e1d1d</color>
+    <color name="left_background_checked_color">#f3f3f3</color>
+</resources>

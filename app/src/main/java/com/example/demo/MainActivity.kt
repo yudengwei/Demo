@@ -9,6 +9,7 @@ import android.view.animation.*
 import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.example.PathUtils
 import com.example.animation.ViewAnimationSet
 import com.example.base.util.UiUtil

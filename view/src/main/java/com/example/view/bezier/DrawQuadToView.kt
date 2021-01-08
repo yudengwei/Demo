@@ -21,11 +21,14 @@ class DrawQuadToView @JvmOverloads constructor(context : Context, attributeSet :
     var endY = 0
     var eventX = 0
     var eventY = 0
+    var eventBottomX = 0
+    var eventBottomY = 0
     val mPaint = Paint().let {
         it.isAntiAlias = true
         it
     }
     val mPath = Path()
+    val mPathBottom = Path()
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
@@ -37,12 +40,14 @@ class DrawQuadToView @JvmOverloads constructor(context : Context, attributeSet :
         endY = centery
         eventX = centerX
         eventY = centery - 250
+        eventBottomX = centerX
+        eventBottomY = centery + 250
     }
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         canvas?.let {
-            mPaint.color = Color.GRAY
+           /* mPaint.color = Color.GRAY
             it.drawCircle(startX.toFloat(), startY.toFloat(), 8f, mPaint)
             it.drawCircle(endX.toFloat(), endY.toFloat(), 8f, mPaint)
             it.drawCircle(eventX.toFloat(), eventY.toFloat(), 8f, mPaint)
@@ -50,9 +55,9 @@ class DrawQuadToView @JvmOverloads constructor(context : Context, attributeSet :
             mPaint.strokeWidth = 3f
             mPaint.color = Color.RED
             it.drawLine(startX.toFloat(), centery.toFloat(), eventX.toFloat(), eventY.toFloat(), mPaint)
-            it.drawLine(endX.toFloat(), endY.toFloat(), eventX.toFloat(), eventY.toFloat(), mPaint)
+            it.drawLine(endX.toFloat(), endY.toFloat(), eventX.toFloat(), eventY.toFloat(), mPaint)*/
 
-            mPaint.color = Color.GREEN
+            mPaint.color = Color.BLACK
             mPaint.style = Paint.Style.STROKE
             mPath.reset()
             mPath.moveTo(startX.toFloat(), startY.toFloat())
@@ -62,14 +67,27 @@ class DrawQuadToView @JvmOverloads constructor(context : Context, attributeSet :
              */
             mPath.quadTo(eventX.toFloat(), eventY.toFloat(), endX.toFloat(), endY.toFloat())
             it.drawPath(mPath, mPaint)
+            mPathBottom.reset()
+            mPathBottom.moveTo(startX.toFloat(), startY.toFloat())
+            /**
+             * (eventX.toFloat(), eventY.toFloat()) 为控制点
+             * (endX.toFloat(), endY.toFloat()) 结束点
+             */
+            mPathBottom.quadTo(eventBottomX.toFloat(), eventBottomY.toFloat(), endX.toFloat(), endY.toFloat())
+            it.drawPath(mPathBottom, mPaint)
         }
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
         when (event.action) {
-            MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE ->{
-                eventX = event.x.toInt()
-                eventY = event.y.toInt()
+            MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE -> {
+                if (event.y.toInt() > centery) {
+                    eventBottomX = event.x.toInt()
+                    eventBottomY = event.y.toInt()
+                } else {
+                    eventX = event.x.toInt()
+                    eventY = event.y.toInt()
+                }
                 invalidate()
             }
         }

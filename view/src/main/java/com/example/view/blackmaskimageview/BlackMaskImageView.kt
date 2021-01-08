@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.util.AttributeSet
 import android.widget.ImageView
+import com.bumptech.glide.Glide
 
 class BlackMaskImageView @JvmOverloads constructor(context : Context, attributeSet : AttributeSet? = null, defaultStyle : Int = 0)
     : ImageView(context, attributeSet, defaultStyle){
@@ -12,6 +13,7 @@ class BlackMaskImageView @JvmOverloads constructor(context : Context, attributeS
     private var mIsBlackMask = false
 
     override fun onDraw(canvas: Canvas?) {
+
         super.onDraw(canvas)
         if (mIsBlackMask) {
             canvas?.drawColor(Color.parseColor("#4C000000"))

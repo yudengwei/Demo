@@ -3,6 +3,7 @@ package com.abiao.libjetpackdemo.repository
 import com.abiao.libjetpackdemo.app.App
 import com.abiao.libjetpackdemo.model.Shoe
 import com.abiao.libjetpackdemo.room.AppDatabase
+import com.example.base.util.LogUtil
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.google.gson.stream.JsonReader
@@ -15,6 +16,7 @@ class ShoeRepository : BaseRepository<Shoe> {
         val appContext = App.getApplicationContext()
         val dao = AppDatabase.getInstance().shoeDao()
         originDatas = dao.getAllShoes()
+        LogUtil.d("isEmpty: ${originDatas.size}")
         if (originDatas.isEmpty()) {
             appContext.assets.open("shoes.json").use { stream ->
                 JsonReader(stream.reader()).use {
