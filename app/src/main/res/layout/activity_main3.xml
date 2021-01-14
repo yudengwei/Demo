@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.example.view.bezier.DrawQuadToView
+        <com.example.view.bezier.grid.SimpleCubicView
+            android:id="@+id/view_circle"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_width="match_parent"

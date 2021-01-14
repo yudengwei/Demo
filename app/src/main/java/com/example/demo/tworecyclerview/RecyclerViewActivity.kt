@@ -6,11 +6,14 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.demo.R
 import com.example.demo.databinding.ActivityRecyclerviewBinding
 import com.example.demo.tworecyclerview.adapter.LeftAdapter
+import com.example.demo.tworecyclerview.adapter.RightAdapter
 import com.example.demo.tworecyclerview.data.LeftBean
+import com.example.demo.tworecyclerview.data.RightBean
 import com.example.demo.tworecyclerview.data.SortBean
 import com.google.gson.Gson
 import java.io.IOException
@@ -22,15 +25,22 @@ class RecyclerViewActivity : AppCompatActivity(){
     }
 
     private lateinit var mBinding : ActivityRecyclerviewBinding
-    private val mLeftBeans = mutableListOf<LeftBean>()
+
     private lateinit var mSortbean : SortBean
+
+    private val mLeftBeans = mutableListOf<LeftBean>()
     private lateinit var mLeftAdapter : LeftAdapter
+
+    private val mRightBean = mutableListOf<RightBean>()
+    private lateinit var mRightAdapter: RightAdapter
+    private lateinit var mGridManager : GridLayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_recyclerview)
         getData()
         initLeftRecyclerView()
+        initRightRecyclerview()
     }
 
     private fun initLeftRecyclerView() {
@@ -38,6 +48,18 @@ class RecyclerViewActivity : AppCompatActivity(){
         mBinding.leftRecyclerview.adapter = mLeftAdapter
         mBinding.leftRecyclerview.layoutManager = LinearLayoutManager(this)
         mBinding.leftRecyclerview.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+    }
+
+    private fun initRightRecyclerview() {
+        mRightAdapter = RightAdapter(this, mRightBean)
+        mGridManager = GridLayoutManager(this, 3)
+        mGridManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                return if(mRightBean[position].titleed) 3 else 1
+            }
+        }
+        mBinding.rightRecyclerview.adapter = mRightAdapter
+        mBinding.rightRecyclerview.layoutManager = mGridManager
     }
 
     private fun getData() {
@@ -55,6 +77,13 @@ class RecyclerViewActivity : AppCompatActivity(){
                     }
                     bean.setChecked(true)
                 })
+        }
+        for (i in 0 until mSortbean.categoryOneArray!!.size) {
+            val bean = mSortbean.categoryOneArray!![i]
+            mRightBean.add(RightBean(titleName = bean.name, titleed = true))
+            for (categoryTwoArrayBean in bean.categoryTwoArray!!) {
+                mRightBean.add(RightBean(name = categoryTwoArrayBean.name))
+            }
         }
     }
 

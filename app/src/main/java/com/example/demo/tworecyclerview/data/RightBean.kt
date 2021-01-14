@@ -3,8 +3,8 @@ package com.example.demo.tworecyclerview.data
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 
-class RightBean(@Bindable var name : String, @Bindable var titleName : String, @Bindable var titleed : Boolean,
-                @Bindable var tag : String, @Bindable var imgSrc : Boolean) : BaseObservable(){
+class RightBean(@Bindable var name : String? = null, @Bindable var titleName : String? = null, @Bindable var titleed : Boolean = false,
+                @Bindable var tag : String? = null, @Bindable var imgSrc : Boolean = false) : BaseObservable(){
 
     @JvmName("setName1")
     fun setName(name : String) {
