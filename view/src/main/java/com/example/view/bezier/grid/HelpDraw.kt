@@ -17,7 +17,7 @@ fun getGrid(windowPoint: Point) : Picture {
 fun getHelpPoint(color: Int) = Paint().also { paint ->
     paint.strokeWidth = 2f
     paint.color = color
-    paint.textSize = 50f
+    paint.textSize = 30f
     paint.strokeCap = Paint.Cap.ROUND
     paint.style = Paint.Style.STROKE
     //设置虚线效果new float[]{可见长度, 不可见长度},偏移值
