@@ -1,13 +1,12 @@
 package com.example.demo.opengl.flatgraphics
 
-import android.content.Context
 import android.opengl.GLES20
 import com.example.demo.R
 import com.example.demo.opengl.buildProgram
 import com.example.demo.opengl.makeInterleavedBuffer
 import java.nio.FloatBuffer
 
-class BezierCurve(private val context: Context) {
+class BezierCurve{
 
     companion object {
         val BYTES_PER_FLOAT = 4
@@ -41,15 +40,9 @@ class BezierCurve(private val context: Context) {
 
     private var mAmps = 1.0f
 
-    private lateinit var mBuffer : FloatBuffer
+    private val mBuffer : FloatBuffer
 
     private var mBufferId = 0
-
-    private val mModelMatrix = FloatArray(16)
-    private val mViewMatrix = FloatArray(16)
-    private val mProjectionMatrix = FloatArray(16)
-    private val mMVPMatrix = FloatArray(16)
-    private val mTemporaryMatrix = FloatArray(16)
 
     init {
         mBuffer = mDataPoints.makeInterleavedBuffer(NUM_POINTS)
@@ -110,5 +103,51 @@ class BezierCurve(private val context: Context) {
             stride,
             0
         )
+
+        // Clear the currently bound buffer (so future OpenGL calls do not use this buffer).
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0)
+
+        GLES20.glDrawArrays(GLES20.GL_POINTS, 0, NUM_POINTS * POINTS_PER_TRIANGLE)
+
+    }
+
+    fun draw(mvp: FloatArray?) {
+        GLES20.glClearColor(0.0f, 0f, 0f, 1f)
+        GLES20.glClear(GLES20.GL_DEPTH_BUFFER_BIT or GLES20.GL_COLOR_BUFFER_BIT)
+        GLES20.glUniform4f(
+            mStartEndHandle,
+            mStartEndPoints[0],
+            mStartEndPoints[1],
+            mStartEndPoints[2],
+            mStartEndPoints[3]
+        )
+        GLES20.glUniform4f(
+            mControlHandle,
+            mControlPoints[0],
+            mControlPoints[1],
+            mControlPoints[2],
+            mControlPoints[3]
+        )
+        GLES20.glUniform1f(mAmpsHandle, mAmps)
+        val stride: Int = BYTES_PER_FLOAT * T_DATA_SIZE
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, mBufferId)
+        GLES20.glEnableVertexAttribArray(mDataHandle)
+        GLES20.glVertexAttribPointer(
+            mDataHandle,
+            T_DATA_SIZE,
+            GLES20.GL_FLOAT,
+            false,
+            stride,
+            0
+        )
+
+        // Clear the currently bound buffer (so future OpenGL calls do not use this buffer).
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0)
+        GLES20.glUniformMatrix4fv(mMvpHandle, 1, false, mvp, 0)
+        GLES20.glDrawArrays(GLES20.GL_POINTS, 0, NUM_POINTS * POINTS_PER_TRIANGLE)
+    }
+
+    fun setAmp(amp: Float) {
+        mAmps = amp
     }
 }

@@ -1,11 +1,8 @@
 package com.example.demo
 
-import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import com.airbnb.lottie.LottieAnimationView
 import com.example.demo.databinding.ActivityMain3Binding
 
 class MainActivity3 : AppCompatActivity(){
@@ -24,6 +21,9 @@ class MainActivity3 : AppCompatActivity(){
                 mBind.startOrStop.text = "stop"
                 mBind.threeView.start()
             }
+        }
+        mBind.showPartricle.setOnClickListener {
+            mBind.particleView.showOrHideParticle()
         }
     }
 }

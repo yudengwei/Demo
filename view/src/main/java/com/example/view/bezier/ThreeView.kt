@@ -9,6 +9,7 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
 import com.example.base.util.LogUtil
+import kotlin.math.sqrt
 import kotlin.random.Random
 
 class ThreeView @JvmOverloads constructor(context : Context, attributeSet : AttributeSet? = null, defStyleAttr : Int = 0) : View(context, attributeSet, defStyleAttr) {
@@ -38,12 +39,11 @@ class ThreeView @JvmOverloads constructor(context : Context, attributeSet : Attr
     private val mRadius = 200
     private val mRange = 80
 
-    private var mIsRunning = false
+    private var mIsRunning = true
 
     private val mValueAnimator = ValueAnimator().also {
         it.duration = 1000
         it.addUpdateListener { value ->
-            LogUtil.d("1234")
             val current = value.animatedValue as PointValue
             mStartEndPoints[0].x = current.point1
             mStartEndPoints[1].y = current.point2
@@ -53,7 +53,6 @@ class ThreeView @JvmOverloads constructor(context : Context, attributeSet : Attr
         }
         it.addListener(object : Animator.AnimatorListener {
             override fun onAnimationStart(animation: Animator?) {
-                mIsRunning = true
             }
 
             override fun onAnimationEnd(animation: Animator?) {
@@ -71,6 +70,11 @@ class ThreeView @JvmOverloads constructor(context : Context, attributeSet : Attr
             }
 
         })
+    }
+
+    private val mBigAnimator = ValueAnimator.ofFloat(0f, 1f).also {
+        it.duration = 4000
+
     }
 
     private val type = PointValueType()
@@ -186,8 +190,6 @@ class ThreeView @JvmOverloads constructor(context : Context, attributeSet : Attr
             this.point3 = point3
             this.point4 = point4
         }
-
-
     }
 
     class PointValueType : TypeEvaluator<PointValue> {
@@ -200,6 +202,7 @@ class ThreeView @JvmOverloads constructor(context : Context, attributeSet : Attr
                 current.point4 = (startValue.point4 + fraction * (endValue.point4 - startValue.point4)).toInt()
             }
         }
-
     }
+
+
 }
