@@ -1,208 +1,320 @@
 package com.example.view.bezier
 
 import android.animation.Animator
-import android.animation.PropertyValuesHolder
 import android.animation.TypeEvaluator
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
-import com.example.base.util.LogUtil
-import kotlin.math.sqrt
-import kotlin.random.Random
 
-class ThreeView @JvmOverloads constructor(context : Context, attributeSet : AttributeSet? = null, defStyleAttr : Int = 0) : View(context, attributeSet, defStyleAttr) {
+class ThreeView @JvmOverloads constructor(context: Context, attributeSet: AttributeSet? = null, defStyleAttr: Int = 0) : View(context, attributeSet, defStyleAttr) {
 
     private val mPaint = Paint().also {
         it.isAntiAlias = true
-        it.style = Paint.Style.FILL
+        it.style = Paint.Style.STROKE
+        it.color = Color.WHITE
+    }
+
+    private val StringTextBIG = "呼气"
+    private var StringTextSHRINK = "吸气"
+
+    private var mCurrentText = StringTextBIG
+
+    private val mTextPaint = Paint().apply {
+        this.style = Paint.Style.FILL
+        this.strokeWidth = 4f
+        this.textSize = 50f
+        this.textAlign = Paint.Align.CENTER
+        this.color = Color.WHITE
+        this.isAntiAlias = true
     }
 
     private val mPath = Path()
 
     private var mCenterPoint = Point()
 
-    private val mStartEndPoints = Array(4) {
+    private val mPoints = Array(12) {
         Point()
     }
 
-    private val mControlPoints = Array(8) {
+    private val mInitPoints = Array(12) {
         Point()
     }
-
-    private val mStartPointValue = PointValue()
-    private val mEndPointValue = PointValue()
-    private val mCurrentPointValue = PointValue()
-    private val mCurrentMaxPointValue = PointValue()
 
     private val mRadius = 200
-    private val mRange = 80
 
-    private var mIsRunning = true
+    private var mIsShrink = false
+    private var mIsRunning = false
 
-    private val mValueAnimator = ValueAnimator().also {
-        it.duration = 1000
+    private val mBigAnimator = ValueAnimator().also {
+        it.duration = 4000
         it.addUpdateListener { value ->
-            val current = value.animatedValue as PointValue
-            mStartEndPoints[0].x = current.point1
-            mStartEndPoints[1].y = current.point2
-            mStartEndPoints[2].x = current.point3
-            mStartEndPoints[3].y = current.point4
+            val realPoints = value.animatedValue as Array<Point>
+            for (i in mPoints.indices) {
+                when(i) {
+                    0 -> {
+                        mPoints[0].y = realPoints[0].y
+                    }
+                    3 -> {
+                        mPoints[3].x = realPoints[3].x
+                    }
+                    6 -> {
+                        mPoints[6].y = realPoints[6].y
+                    }
+                    9 -> {
+                        mPoints[9].x = realPoints[9].x
+                    }
+                    else -> {
+                        mPoints[i].x = realPoints[i].x
+                        mPoints[i].y = realPoints[i].y
+                    }
+                }
+            }
             invalidate()
         }
         it.addListener(object : Animator.AnimatorListener {
-            override fun onAnimationStart(animation: Animator?) {
+            override fun onAnimationStart(p0: Animator?) {
+                mIsRunning = true
             }
 
-            override fun onAnimationEnd(animation: Animator?) {
-                LogUtil.d("mIsRunning: $mIsRunning")
-                if (mIsRunning) {
-                    start()
+            override fun onAnimationEnd(p0: Animator?) {
+                for (i in mInitPoints.indices) {
+                    mInitPoints[i].x = mPoints[i].x
+                    mInitPoints[i].y = mPoints[i].y
                 }
-            }
-
-            override fun onAnimationCancel(animation: Animator?) {
                 mIsRunning = false
+                mCurrentText = StringTextSHRINK
+                mIsShrink = true
+                mShrinkAnimator.setObjectValues(mInitPoints, mInitPoints)
+                mShrinkAnimator.setEvaluator(bigEvaluator)
+                mShrinkAnimator.start()
             }
 
-            override fun onAnimationRepeat(animation: Animator?) {
+            override fun onAnimationCancel(p0: Animator?) {
+            }
+
+            override fun onAnimationRepeat(p0: Animator?) {
             }
 
         })
     }
 
-    private val mBigAnimator = ValueAnimator.ofFloat(0f, 1f).also {
+    private val mShrinkAnimator = ValueAnimator().also {
         it.duration = 4000
+        it.addUpdateListener { value ->
+            val realPoints = value.animatedValue as Array<Point>
+            for (i in mPoints.indices) {
+                when(i) {
+                    0 -> {
+                        mPoints[0].y = realPoints[0].y
+                    }
+                    3 -> {
+                        mPoints[3].x = realPoints[3].x
+                    }
+                    6 -> {
+                        mPoints[6].y = realPoints[6].y
+                    }
+                    9 -> {
+                        mPoints[9].x = realPoints[9].x
+                    }
+                    else -> {
+                        mPoints[i].x = realPoints[i].x
+                        mPoints[i].y = realPoints[i].y
+                    }
+                }
+            }
+            invalidate()
+        }
+        it.addListener(object : Animator.AnimatorListener {
+            override fun onAnimationStart(p0: Animator?) {
+                mIsRunning = true
+            }
 
+            override fun onAnimationEnd(p0: Animator?) {
+                for (i in mInitPoints.indices) {
+                    mInitPoints[i].x = mPoints[i].x
+                    mInitPoints[i].y = mPoints[i].y
+                }
+                mIsRunning = false
+                mCurrentText = StringTextBIG
+                mIsShrink = false
+                invalidate()
+            }
+
+            override fun onAnimationCancel(p0: Animator?) {
+            }
+
+            override fun onAnimationRepeat(p0: Animator?) {
+            }
+
+        })
     }
 
-    private val type = PointValueType()
+    private val bigEvaluator = BigEvaluator()
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         mCenterPoint.x = w / 2
-        mCenterPoint.y = h / 2
+        mCenterPoint.y = mCenterPoint.x
 
         setInitialPoints()
-        val gradient = LinearGradient(mControlPoints[5].x.toFloat(), mControlPoints[5].y.toFloat(),
-            mControlPoints[1].x.toFloat(),mControlPoints[1].y.toFloat(),
-            intArrayOf(Color.parseColor("#5486c9"),Color.parseColor("#7cc9da")),null,Shader.TileMode.MIRROR)
-        mPaint.shader = gradient
     }
 
     override fun onDraw(canvas: Canvas) {
 
         mPath.reset()
-        mPath.moveTo(mStartEndPoints[0].x.toFloat(), mStartEndPoints[0].y.toFloat())
-        for (i in mStartEndPoints.indices) {
-            val endPoint = if (i != mStartEndPoints.size - 1) mStartEndPoints[i + 1] else mStartEndPoints[0]
-            val controlPoint1 = mControlPoints[i * 2]
-            val controlPoint2 = mControlPoints[i * 2 + 1]
+        mPath.moveTo(mPoints[0].x.toFloat(), mPoints[0].y.toFloat())
+        var i = 1
+        while (i < mPoints.size) {
+            val endPoint = if (i != 10) mPoints[i + 2] else mPoints[0]
+            val controlPoint1 = mPoints[i]
+            val controlPoint2 = mPoints[i + 1]
             cubicTo(controlPoint1, controlPoint2, endPoint)
+            i += 3
         }
         canvas.drawPath(mPath, mPaint)
+        val fontMetrics: Paint.FontMetrics = mTextPaint.fontMetrics
+        val distance = (fontMetrics.bottom - fontMetrics.top) / 2 - fontMetrics.bottom
+        val baseline: Float = mCenterPoint.y + distance
+        canvas.drawText(mCurrentText, mCenterPoint.x.toFloat(), baseline, mTextPaint)
     }
 
-    private fun cubicTo(controlPoint1 : Point, controlPoint2 : Point, endPoint : Point) {
+    private fun cubicTo(controlPoint1: Point, controlPoint2: Point, endPoint: Point) {
         mPath.cubicTo(controlPoint1.x.toFloat(), controlPoint1.y.toFloat(), controlPoint2.x.toFloat(), controlPoint2.y.toFloat(), endPoint.x.toFloat(), endPoint.y.toFloat())
     }
 
     private fun setInitialPoints() {
 
-        mStartEndPoints[0].x = mCenterPoint.x
-        mStartEndPoints[0].y = mCenterPoint.y - mRadius
-        mStartPointValue.point1 = mStartEndPoints[0].x - mRange
-        mEndPointValue.point1 = mStartEndPoints[0].x + mRange
+        mPoints[0].x = mCenterPoint.x
+        mPoints[0].y = mCenterPoint.y - mRadius
+        mInitPoints[0].x = mPoints[0].x
+        mInitPoints[0].y = mPoints[0].y
 
-        mStartEndPoints[1].x = mCenterPoint.x + mRadius
-        mStartEndPoints[1].y = mCenterPoint.y
-        mStartPointValue.point2 = mStartEndPoints[1].y - mRange
-        mEndPointValue.point2 = mStartEndPoints[1].y + mRange
+        mPoints[1].x = mCenterPoint.x + mRadius / 2
+        mPoints[1].y = mCenterPoint.y - mRadius
+        mInitPoints[1].x = mPoints[1].x
+        mInitPoints[1].y = mPoints[1].y
 
-        mStartEndPoints[2].x = mCenterPoint.x
-        mStartEndPoints[2].y = mCenterPoint.y + mRadius
-        mStartPointValue.point3 = mStartEndPoints[2].x - mRange
-        mEndPointValue.point3 = mStartEndPoints[2].x + mRange
+        mPoints[2].x = mCenterPoint.x + mRadius
+        mPoints[2].y = mCenterPoint.y - mRadius / 2
+        mInitPoints[2].x = mPoints[2].x
+        mInitPoints[2].y = mPoints[2].y
 
-        mStartEndPoints[3].x = mCenterPoint.x - mRadius
-        mStartEndPoints[3].y = mCenterPoint.y
-        mStartPointValue.point4 = mStartEndPoints[3].y - mRange
-        mEndPointValue.point4 = mStartEndPoints[3].y + mRange
+        mPoints[3].x = mCenterPoint.x + mRadius
+        mPoints[3].y = mCenterPoint.y
+        mInitPoints[3].x = mPoints[3].x
+        mInitPoints[3].y = mPoints[3].y
 
-        mControlPoints[0].x = mCenterPoint.x + mRadius / 2
-        mControlPoints[0].y = mCenterPoint.y - mRadius
+        mPoints[4].x = mCenterPoint.x + mRadius
+        mPoints[4].y = mCenterPoint.y + mRadius / 2
+        mInitPoints[4].x = mPoints[4].x
+        mInitPoints[4].y = mPoints[4].y
 
-        mControlPoints[1].x = mCenterPoint.x + mRadius
-        mControlPoints[1].y = mCenterPoint.y - mRadius / 2
+        mPoints[5].x = mCenterPoint.x + mRadius / 2
+        mPoints[5].y = mCenterPoint.y + mRadius
+        mInitPoints[5].x = mPoints[5].x
+        mInitPoints[5].y = mPoints[5].y
 
-        mControlPoints[2].x = mCenterPoint.x + mRadius
-        mControlPoints[2].y = mCenterPoint.y + mRadius / 2
+        mPoints[6].x = mCenterPoint.x
+        mPoints[6].y = mCenterPoint.y + mRadius
+        mInitPoints[6].x = mPoints[6].x
+        mInitPoints[6].y = mPoints[6].y
 
-        mControlPoints[3].x = mCenterPoint.x + mRadius / 2
-        mControlPoints[3].y = mCenterPoint.y + mRadius
+        mPoints[7].x = mCenterPoint.x - mRadius / 2
+        mPoints[7].y = mCenterPoint.y + mRadius
+        mInitPoints[7].x = mPoints[7].x
+        mInitPoints[7].y = mPoints[7].y
 
-        mControlPoints[4].x = mCenterPoint.x - mRadius / 2
-        mControlPoints[4].y = mCenterPoint.y + mRadius
+        mPoints[8].x = mCenterPoint.x - mRadius
+        mPoints[8].y = mCenterPoint.y + mRadius / 2
+        mInitPoints[8].x = mPoints[8].x
+        mInitPoints[8].y = mPoints[8].y
 
-        mControlPoints[5].x = mCenterPoint.x - mRadius
-        mControlPoints[5].y = mCenterPoint.y + mRadius / 2
+        mPoints[9].x = mCenterPoint.x - mRadius
+        mPoints[9].y = mCenterPoint.y
+        mInitPoints[9].x = mPoints[9].x
+        mInitPoints[9].y = mPoints[9].y
 
-        mControlPoints[6].x = mCenterPoint.x - mRadius
-        mControlPoints[6].y = mCenterPoint.y - mRadius / 2
+        mPoints[10].x = mCenterPoint.x - mRadius
+        mPoints[10].y = mCenterPoint.y - mRadius / 2
+        mInitPoints[10].x = mPoints[10].x
+        mInitPoints[10].y = mPoints[10].y
 
-        mControlPoints[7].x = mCenterPoint.x - mRadius / 2
-        mControlPoints[7].y = mCenterPoint.y - mRadius
+        mPoints[11].x = mCenterPoint.x - mRadius / 2
+        mPoints[11].y = mCenterPoint.y - mRadius
+        mInitPoints[11].x = mPoints[11].x
+        mInitPoints[11].y = mPoints[11].y
     }
 
-    fun start() {
-        mCurrentMaxPointValue.point1 = Random.nextInt(mStartPointValue.point1, mEndPointValue.point1)
-        mCurrentMaxPointValue.point2 = Random.nextInt(mStartPointValue.point2, mEndPointValue.point2)
-        mCurrentMaxPointValue.point3 = Random.nextInt(mStartPointValue.point3, mEndPointValue.point3)
-        mCurrentMaxPointValue.point4 = Random.nextInt(mStartPointValue.point4, mEndPointValue.point4)
-
-        mCurrentPointValue.point1 = mStartEndPoints[0].x
-        mCurrentPointValue.point2 = mStartEndPoints[1].y
-        mCurrentPointValue.point3 = mStartEndPoints[2].x
-        mCurrentPointValue.point4 = mStartEndPoints[3].y
-
-        mValueAnimator.setObjectValues(mCurrentPointValue, mCurrentMaxPointValue)
-        mValueAnimator.setEvaluator(type)
-        mValueAnimator.start()
-    }
-
-    fun stop() {
-        mValueAnimator.cancel()
-        mIsRunning = false
-    }
-
-    fun isRunning() = mIsRunning
-
-    class PointValue {
-        var point1 : Int = 0
-        var point2 : Int = 0
-        var point3 : Int = 0
-        var point4 : Int = 0
-
-        constructor(point1: Int = 0, point2: Int = 0, point3: Int = 0, point4: Int = 0) {
-            this.point1 = point1
-            this.point2 = point2
-            this.point3 = point3
-            this.point4 = point4
+    fun big() {
+        if (mIsRunning) {
+            return
         }
+        mBigAnimator.setObjectValues(mInitPoints, mInitPoints)
+        mBigAnimator.setEvaluator(bigEvaluator)
+        mBigAnimator.start()
     }
 
-    class PointValueType : TypeEvaluator<PointValue> {
+    fun isBig() = mIsShrink
 
-        override fun evaluate(fraction: Float, startValue: PointValue, endValue: PointValue): PointValue {
-            return PointValue().also { current ->
-                current.point1 = (startValue.point1 + fraction * (endValue.point1 - startValue.point1)).toInt()
-                current.point2 = (startValue.point2 + fraction * (endValue.point2 - startValue.point2)).toInt()
-                current.point3 = (startValue.point3 + fraction * (endValue.point3 - startValue.point3)).toInt()
-                current.point4 = (startValue.point4 + fraction * (endValue.point4 - startValue.point4)).toInt()
+    private inner class BigEvaluator : TypeEvaluator<Array<Point>> {
+
+        override fun evaluate(p0: Float, p1: Array<Point>, p2: Array<Point>): Array<Point> {
+            return Array(12) {
+                var endValueX = 0
+                var endValueY = 0
+                when (it) {
+                    0 -> {
+                        endValueY = if (!mIsShrink) p1[it].y - mRadius else p1[it].y + mRadius
+                    }
+                    1 -> {
+                        endValueX = if (!mIsShrink) p1[it].x + mRadius / 2 else p1[it].x - mRadius / 2
+                        endValueY = if (!mIsShrink) p1[it].y - mRadius else p1[it].y + mRadius
+                    }
+                    2 -> {
+                        endValueX = if (!mIsShrink) p1[it].x + mRadius else p1[it].x - mRadius
+                        endValueY = if (!mIsShrink) p1[it].y - mRadius / 2 else p1[it].y + mRadius / 2
+                    }
+                    3 -> {
+                        endValueX = if (!mIsShrink) p1[it].x + mRadius else p1[it].x - mRadius
+                    }
+                    4 -> {
+                        endValueX = if (!mIsShrink) p1[it].x + mRadius else p1[it].x - mRadius
+                        endValueY = if (!mIsShrink) p1[it].y + mRadius / 2 else p1[it].y - mRadius / 2
+                    }
+                    5 -> {
+                        endValueX = if (!mIsShrink) p1[it].x + mRadius / 2 else p1[it].x - mRadius / 2
+                        endValueY = if (!mIsShrink) p1[it].y + mRadius else p1[it].y - mRadius
+                    }
+                    6 -> {
+                        endValueY = if (!mIsShrink) p1[it].y + mRadius else p1[it].y - mRadius
+                    }
+                    7 -> {
+                        endValueX = if (!mIsShrink) p1[it].x - mRadius / 2 else p1[it].x + mRadius / 2
+                        endValueY = if (!mIsShrink) p1[it].y + mRadius else p1[it].y - mRadius
+                    }
+                    8 -> {
+                        endValueX = if (!mIsShrink) p1[it].x - mRadius else p1[it].x + mRadius
+                        endValueY = if (!mIsShrink) p1[it].y + mRadius / 2 else p1[it].y - mRadius / 2
+                    }
+                    9 -> {
+                        endValueX = if (!mIsShrink) p1[it].x - mRadius else p1[it].x + mRadius
+                    }
+                    10 -> {
+                        endValueX = if (!mIsShrink) p1[it].x - mRadius else p1[it].x + mRadius
+                        endValueY = if (!mIsShrink) p1[it].y - mRadius / 2 else p1[it].y + mRadius / 2
+                    }
+                    11 -> {
+                        endValueX = if (!mIsShrink) p1[it].x - mRadius / 2 else p1[it].x + mRadius / 2
+                        endValueY = if (!mIsShrink) p1[it].y - mRadius else p1[it].y + mRadius
+                    }
+                }
+                val x = (p1[it].x + p0 * (endValueX - p1[it].x)).toInt()
+                val y = (p1[it].y + p0 * (endValueY - p1[it].y)).toInt()
+                Point(x, y)
             }
         }
+
     }
-
-
 }

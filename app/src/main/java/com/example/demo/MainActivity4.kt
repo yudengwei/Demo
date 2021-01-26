@@ -2,7 +2,7 @@ package com.example.demo
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.demo.opengl.MySurfaceView
+import com.example.view.opengl.MySurfaceView
 
 
 class MainActivity4 : AppCompatActivity() {

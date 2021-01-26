@@ -1,0 +1,3 @@
+/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/.cxx/cmake/release/arm64-v8a/CMakeFiles/rebuild_cache.dir
+/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/.cxx/cmake/release/arm64-v8a/CMakeFiles/edit_cache.dir
+/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/.cxx/cmake/release/arm64-v8a/CMakeFiles/native-render.dir

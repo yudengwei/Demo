@@ -13,17 +13,8 @@ class MainActivity3 : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         mBind = DataBindingUtil.setContentView(this, R.layout.activity_main3)
 
-        mBind.startOrStop.setOnClickListener {
-            if (mBind.threeView.isRunning()) {
-                mBind.startOrStop.text = "start"
-                mBind.threeView.stop()
-            } else {
-                mBind.startOrStop.text = "stop"
-                mBind.threeView.start()
-            }
-        }
-        mBind.showPartricle.setOnClickListener {
-            mBind.particleView.showOrHideParticle()
+        mBind.start.setOnClickListener {
+            mBind.meditationView.start()
         }
     }
 }
