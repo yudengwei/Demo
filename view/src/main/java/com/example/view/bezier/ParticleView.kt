@@ -1,7 +1,7 @@
 package com.example.view.bezier
 
 import android.animation.Animator
-import android.animation.TypeEvaluator
+import android.animation.AnimatorSet
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
@@ -10,16 +10,17 @@ import android.graphics.Paint
 import android.graphics.Point
 import android.util.AttributeSet
 import android.view.View
-import android.view.animation.LinearInterpolator
+import android.view.animation.Animation
+import android.view.animation.OvershootInterpolator
 import androidx.core.animation.addListener
 import com.example.base.util.LogUtil
-import com.example.view.interpolator.*
 import kotlin.math.sqrt
 import kotlin.random.Random
 
 class ParticleView @JvmOverloads constructor(context : Context, attributeSet: AttributeSet? = null, defStyleAttr : Int = 0) : View(context, attributeSet, defStyleAttr){
 
-    private val maxRadius = 5f
+    private val maxRadius = 10f
+    private val mParticleNum = 20
 
     private val mCenterPoint = Point()
     private var maxDistance = 0.toDouble()
@@ -29,11 +30,11 @@ class ParticleView @JvmOverloads constructor(context : Context, attributeSet: At
 
     private var mParticles = mutableListOf<Particle>()
 
-    private var mMoveParticles = Array(50){
+    private var mMoveParticles = Array(mParticleNum){
         Particle(alpha = 0)
     }
 
-    private var mInitParticles = Array(50) {
+    private var mInitParticles = Array(mParticleNum) {
         Particle()
     }
 
@@ -43,87 +44,21 @@ class ParticleView @JvmOverloads constructor(context : Context, attributeSet: At
         it.style = Paint.Style.FILL
     }
 
-    private val pointEvaluator = PointEvaluator()
-
     private var mIsOut = false
 
-    private val animator = ValueAnimator().also {
-        it.duration = 4000
-       // it.interpolator = LinearInterpolator()
-        it.addUpdateListener { value->
-            val particleValues = value.animatedValue as Array<Particle>
-            for(i in mParticles.indices) {
-                val p = mParticles[i]
-                val pp = particleValues[i]
-                p.x = pp.x
-                p.y = pp.y
-                p.radius = pp.radius
-                p.alpha = pp.alpha
-            }
-            invalidate()
-        }
-        it.addListener(object : Animator.AnimatorListener {
-            override fun onAnimationStart(animation: Animator?) {
-            }
-
-            override fun onAnimationEnd(animation: Animator?) {
-                mIsOut = true
-                mParticles.clear()
-                animatorGetParticles.start()
-                /*animatorOut.setObjectValues(mMoveParticles, mInitParticles)
-                animatorOut.setEvaluator(pointEvaluator)
-                animatorOut.start()*/
-            }
-
-            override fun onAnimationCancel(animation: Animator?) {
-            }
-
-            override fun onAnimationRepeat(animation: Animator?) {
-            }
-
-        })
-    }
-
-    private val animatorOut = ValueAnimator().also {
-        it.duration = 4000
-        it.addUpdateListener { value->
-            val particleValues = value.animatedValue as Array<Particle>
-            for(i in mParticles.indices) {
-                val p = mParticles[i]
-                val pp = particleValues[i]
-                p.x = pp.x
-                p.y = pp.y
-                p.radius = pp.radius
-                p.alpha = pp.alpha
-            }
-            invalidate()
-        }
-        it.addListener(object : Animator.AnimatorListener {
-            override fun onAnimationStart(animation: Animator?) {
-            }
-
-            override fun onAnimationEnd(animation: Animator?) {
-                invalidate()
-            }
-
-            override fun onAnimationCancel(animation: Animator?) {
-            }
-
-            override fun onAnimationRepeat(animation: Animator?) {
-            }
-
-        })
-    }
-
-    private val animatorGetParticles = ValueAnimator.ofInt(0, 50).apply {
-        this.duration = 800
+    private val animatorGetParticles = ValueAnimator.ofInt(0, mParticleNum).apply {
+        this.duration = 2000
         this.addUpdateListener { value ->
             val count = value.animatedValue as Int
             val size = mParticles.size
-            while (size < 50 && count >= mParticles.size) {
-                mParticles.add(if (mIsOut) mMoveParticles[size] else mInitParticles[size])
+            while (size < mParticleNum && count >= mParticles.size) {
+                val moveParticle = mMoveParticles[size]
+                val initParticle = mInitParticles[size]
+                val particle = if (mIsOut) moveParticle.newParticle(radius = initParticle.radius, alpha = 255) else initParticle.newParticle()
+                val endParticle = if (mIsOut) mInitParticles[size].newParticle(radius = 0f, alpha = 0) else mMoveParticles[size].newParticle()
+                mParticles.add(particle)
+                startMoveAnimator(particle, endParticle)
             }
-            invalidate()
         }
         this.addListener(object : Animator.AnimatorListener {
             override fun onAnimationStart(animation: Animator?) {
@@ -142,9 +77,57 @@ class ParticleView @JvmOverloads constructor(context : Context, attributeSet: At
         })
     }
 
+    private fun startMoveAnimator(startParticle : Particle, endParticle : Particle) {
+        val x = ValueAnimator.ofInt(startParticle.x, endParticle.x).apply {
+            this.addUpdateListener { value ->
+                startParticle.x = value.animatedValue as Int
+                invalidate()
+            }
+        }
+        val y = ValueAnimator.ofInt(startParticle.y, endParticle.y).apply {
+            this.addUpdateListener { value ->
+                startParticle.y = value.animatedValue as Int
+                invalidate()
+            }
+        }
+        val radius = ValueAnimator.ofFloat(startParticle.radius, endParticle.radius).apply {
+            this.addUpdateListener { value ->
+                startParticle.radius = value.animatedValue as Float
+                invalidate()
+            }
+        }
+        val alpha = ValueAnimator.ofInt(startParticle.alpha, endParticle.alpha).apply {
+            this.addUpdateListener { value ->
+                startParticle.alpha = value.animatedValue as Int
+                invalidate()
+            }
+        }
+        AnimatorSet().let {
+            it.playTogether(x, y, radius, alpha)
+            it.duration = 4000
+            it.addListener(object : Animator.AnimatorListener{
+                override fun onAnimationStart(animation: Animator?) {
+
+                }
+
+                override fun onAnimationEnd(animation: Animator?) {
+
+                }
+
+                override fun onAnimationCancel(animation: Animator?) {
+                }
+
+                override fun onAnimationRepeat(animation: Animator?) {
+                }
+
+            })
+            it.start()
+        }
+    }
+
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
-        setParam(w / 2,  w / 2)
+        setParam(w / 2,  500)
     }
 
     private fun getParticlePoint(){
@@ -158,7 +141,7 @@ class ParticleView @JvmOverloads constructor(context : Context, attributeSet: At
             var y = if (maxY == minY) maxY else Random.nextInt(minY, maxY)
             y = if (Random.nextInt(2) > 0 || mCenterPoint.y * 2 - y < 0) y else mCenterPoint.y * 2 - y
             val distance = sqrt(x2x + (y - mCenterPoint.y) * (y - mCenterPoint.y)).toFloat()
-            val radius = distance * k
+            val radius = Random.nextFloat() * 10
             val sin = if (y > mCenterPoint.y) (y - mCenterPoint.y).toFloat() / distance else (mCenterPoint.y - y).toFloat() / distance
             val cos = if (x > mCenterPoint.x) (x - mCenterPoint.x).toFloat() / distance else (mCenterPoint.x - x).toFloat() / distance
             val moveY = (sin * mMoveDistance).toInt()
@@ -174,18 +157,26 @@ class ParticleView @JvmOverloads constructor(context : Context, attributeSet: At
     fun setParam(x : Int, y : Int) {
         mCenterPoint.x = x
         mCenterPoint.y = y
-        maxDistance = mCenterPoint.x.toDouble()
-        minDistance = maxDistance * 0.8
+        maxDistance = mCenterPoint.x * 0.8
+        minDistance = mCenterPoint.x * 0.4
         k = (maxRadius / maxDistance).toFloat()
         mMoveDistance = mCenterPoint.x * 0.2f
     }
 
-    fun showParticle() {
+    fun inParticle() {
+        mIsOut = false
+        mParticles.clear()
         getParticlePoint()
         animatorGetParticles.start()
         /*animator.setObjectValues(mInitParticles, mMoveParticles)
         animator.setEvaluator(pointEvaluator)
         animator.start()*/
+    }
+    
+    fun outParticle() {
+        mIsOut = true
+        mParticles.clear()
+        animatorGetParticles.start()
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -195,20 +186,13 @@ class ParticleView @JvmOverloads constructor(context : Context, attributeSet: At
         }
     }
 
-    data class Particle(var x : Int = 0, var y : Int = 0, var radius : Float = 0f, var alpha : Int = 255)
+    data class Particle(var x : Int = 0, var y : Int = 0, var radius : Float = 0f, var alpha : Int = 255) {
+        override fun toString(): String {
+            return "Particle(x=$x, y=$y, radius=$radius, alpha=$alpha)"
+        }
 
-    class PointEvaluator : TypeEvaluator<Array<Particle>> {
-
-        override fun evaluate(fraction: Float, startValues: Array<Particle>, endValues: Array<Particle>): Array<Particle> {
-            return Array(50) {
-                val startValue = startValues[it]
-                val endValue = endValues[it]
-                val x = (startValue.x + fraction * (endValue.x - startValue.x)).toInt()
-                val y = (startValue.y + fraction * (endValue.y - startValue.y)).toInt()
-                val alpha = (startValue.alpha + fraction * (endValue.alpha - startValue.alpha)).toInt()
-                val radius = startValue.radius + fraction * (endValue.radius - startValue.radius)
-                Particle(x, y, radius = radius, alpha = alpha)
-            }
+        fun newParticle(x : Int = this.x, y : Int = this.y, radius : Float = this.radius, alpha : Int = this.alpha) : Particle {
+            return Particle(x, y, radius, alpha)
         }
     }
 }

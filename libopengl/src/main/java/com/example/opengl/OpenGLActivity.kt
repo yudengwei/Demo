@@ -2,6 +2,7 @@ package com.example.opengl
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.opengl.opengl.MySurfaceView1
 
 class OpenGLActivity : AppCompatActivity() {
 

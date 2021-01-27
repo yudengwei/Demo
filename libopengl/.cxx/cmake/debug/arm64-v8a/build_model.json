@@ -175,6 +175,7 @@
       "project": {
         "compilerSettingsCacheFolder": "/Users/dengwei.yu.o/AndroidStudioProjects/Demo/.cxx",
         "cxxFolder": "/Users/dengwei.yu.o/AndroidStudioProjects/Demo/.cxx",
+        "ideBuildTargetAbi": "arm64-v8a,armeabi-v7a,armeabi",
         "isBuildOnlyTargetAbiEnabled": true,
         "isCmakeBuildCohabitationEnabled": false,
         "isNativeCompilerSettingsCacheEnabled": false,
@@ -198,7 +199,6 @@
     "objFolder": "/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/build/intermediates/cmake/debug/obj",
     "variantName": "debug",
     "validAbiList": [
-      "ARMEABI_V7A",
       "ARM64_V8A"
     ],
     "prefabDirectory": "/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/.cxx/cmake/debug/prefab",

@@ -1,4 +1,4 @@
-package com.example.view.opengl.flatgraphics
+package com.example.opengl.opengl.flatgraphics
 
 import android.opengl.GLES20
 

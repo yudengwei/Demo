@@ -60,28 +60,28 @@ build CMakeFiles/native-render.dir/JniImp.cpp.o: CXX_COMPILER__native-render /Us
   DEFINES = -Dnative_render_EXPORTS
   DEP_FILE = CMakeFiles/native-render.dir/JniImp.cpp.o.d
   FLAGS = -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -std=c++11 -frtti -fexceptions -O2 -DNDEBUG  -fPIC
-  INCLUDES = -I/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/render -I/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/sample -I/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/util
+  INCLUDES = -I/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/render -I/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/glm -I/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/sample -I/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/util
   OBJECT_DIR = CMakeFiles/native-render.dir
   OBJECT_FILE_DIR = CMakeFiles/native-render.dir
 build CMakeFiles/native-render.dir/sample/TriangleSample.cpp.o: CXX_COMPILER__native-render /Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/sample/TriangleSample.cpp || cmake_object_order_depends_target_native-render
   DEFINES = -Dnative_render_EXPORTS
   DEP_FILE = CMakeFiles/native-render.dir/sample/TriangleSample.cpp.o.d
   FLAGS = -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -std=c++11 -frtti -fexceptions -O2 -DNDEBUG  -fPIC
-  INCLUDES = -I/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/render -I/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/sample -I/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/util
+  INCLUDES = -I/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/render -I/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/glm -I/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/sample -I/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/util
   OBJECT_DIR = CMakeFiles/native-render.dir
   OBJECT_FILE_DIR = CMakeFiles/native-render.dir/sample
 build CMakeFiles/native-render.dir/util/GLUtils.cpp.o: CXX_COMPILER__native-render /Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/util/GLUtils.cpp || cmake_object_order_depends_target_native-render
   DEFINES = -Dnative_render_EXPORTS
   DEP_FILE = CMakeFiles/native-render.dir/util/GLUtils.cpp.o.d
   FLAGS = -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -std=c++11 -frtti -fexceptions -O2 -DNDEBUG  -fPIC
-  INCLUDES = -I/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/render -I/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/sample -I/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/util
+  INCLUDES = -I/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/render -I/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/glm -I/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/sample -I/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/util
   OBJECT_DIR = CMakeFiles/native-render.dir
   OBJECT_FILE_DIR = CMakeFiles/native-render.dir/util
 build CMakeFiles/native-render.dir/render/MyGLRenderContext.cpp.o: CXX_COMPILER__native-render /Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/render/MyGLRenderContext.cpp || cmake_object_order_depends_target_native-render
   DEFINES = -Dnative_render_EXPORTS
   DEP_FILE = CMakeFiles/native-render.dir/render/MyGLRenderContext.cpp.o.d
   FLAGS = -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -std=c++11 -frtti -fexceptions -O2 -DNDEBUG  -fPIC
-  INCLUDES = -I/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/render -I/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/sample -I/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/util
+  INCLUDES = -I/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/render -I/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/glm -I/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/sample -I/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/util
   OBJECT_DIR = CMakeFiles/native-render.dir
   OBJECT_FILE_DIR = CMakeFiles/native-render.dir/render
 

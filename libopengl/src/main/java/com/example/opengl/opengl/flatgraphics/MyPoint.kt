@@ -1,7 +1,7 @@
-package com.example.view.opengl.flatgraphics
+package com.example.opengl.opengl.flatgraphics
 
 import android.opengl.GLES20
-import com.example.view.R
+import com.example.opengl.R
 
 class MyPoint : FlatGraphics(){
 

@@ -22,18 +22,10 @@ MyGLRenderContext::~MyGLRenderContext()
         delete m_pCurSample;
         m_pCurSample = nullptr;
     }
-
-    if (m_pBeforeSample)
-    {
-        delete m_pBeforeSample;
-        m_pBeforeSample = nullptr;
-    }
-
 }
 
 void MyGLRenderContext::OnSurfaceCreated() {
     LOGCATE("MyGLRenderContext::OnSurfaceCreated");
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 void MyGLRenderContext::OnSurfaceChanged(int width, int height) {
@@ -41,11 +33,16 @@ void MyGLRenderContext::OnSurfaceChanged(int width, int height) {
     glViewport(0, 0, width, height);
     m_ScreenW = width;
     m_ScreenH = height;
+    if (m_pCurSample != nullptr) {
+        m_pCurSample->OnSizeChange(width, height);
+    }
 }
 
 void MyGLRenderContext::OnDrawFrame() {
     LOGCATE("MyGLRenderContext::OnDrawFrame");
-    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+    if (m_pCurSample != nullptr) {
+        m_pCurSample->Draw(0, 0);
+    }
 }
 
 void MyGLRenderContext::DestroyInstance(){
@@ -53,6 +50,9 @@ void MyGLRenderContext::DestroyInstance(){
     if (m_pContext) {
         delete m_pContext;
         m_pContext = nullptr;
+    }
+    if (m_pCurSample != nullptr) {
+        m_pCurSample->Destroy();
     }
 }
 
@@ -69,5 +69,4 @@ MyGLRenderContext *MyGLRenderContext::GetInstance()
 void MyGLRenderContext::Init(const char* vertex, const char* frag) {
     m_pCurSample = new TriangleSample();
     m_pCurSample->Init(vertex, frag);
-    m_pBeforeSample = nullptr;
 }

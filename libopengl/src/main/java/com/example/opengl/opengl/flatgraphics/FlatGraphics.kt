@@ -1,9 +1,9 @@
-package com.example.view.opengl.flatgraphics
+package com.example.opengl.opengl.flatgraphics
 
 import android.opengl.GLES20
-import com.example.view.R
-import com.example.view.opengl.VertexArray
-import com.example.view.opengl.buildProgram
+import com.example.opengl.R
+import com.example.opengl.opengl.VertexArray
+import com.example.opengl.opengl.buildProgram
 
 abstract class FlatGraphics{
 

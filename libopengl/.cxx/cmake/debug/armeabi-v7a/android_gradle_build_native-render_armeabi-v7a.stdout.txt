@@ -1,11 +1,2 @@
 ninja: Entering directory `/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/.cxx/cmake/debug/armeabi-v7a'
-[1/3] Building CXX object CMakeFiles/native-render.dir/render/MyGLRenderContext.cpp.o
-[2/3] Building CXX object CMakeFiles/native-render.dir/sample/TriangleSample.cpp.o
-FAILED: CMakeFiles/native-render.dir/sample/TriangleSample.cpp.o 
-/Users/dengwei.yu.o/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ --target=armv7-none-linux-androideabi21 --gcc-toolchain=/Users/dengwei.yu.o/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/dengwei.yu.o/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/sysroot  -Dnative_render_EXPORTS -I/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/render -I/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/sample -I/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/util -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security  -std=c++11 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC -MD -MT CMakeFiles/native-render.dir/sample/TriangleSample.cpp.o -MF CMakeFiles/native-render.dir/sample/TriangleSample.cpp.o.d -o CMakeFiles/native-render.dir/sample/TriangleSample.cpp.o -c /Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/sample/TriangleSample.cpp
-In file included from /Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/sample/TriangleSample.cpp:7:
-/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/util/GLUtils.h:10:10: fatal error: 'glm.hpp' file not found
-#include <glm.hpp>
-         ^~~~~~~~~
-1 error generated.
-ninja: build stopped: subcommand failed.
+ninja: no work to do.

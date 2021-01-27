@@ -60,14 +60,13 @@ public:
         m_SurfaceHeight = 0;
     }
 
-    virtual ~GLSampleBase()
-    {
+    virtual ~GLSampleBase(){
 
     }
 
     virtual void Init(const char* vertex, const char* frag)= 0;
     virtual void Draw(int screenW, int screenH) = 0;
-
+    virtual void OnSizeChange(int width, int height) = 0;
     virtual void Destroy() = 0;
 
 protected:

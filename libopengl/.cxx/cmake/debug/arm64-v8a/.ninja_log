@@ -1,0 +1,12 @@
+# ninja log v5
+12	124	1611747072	CMakeFiles/native-render.dir/render/MyGLRenderContext.cpp.o	aed872507f2aa4a6
+0	169	1611747072	CMakeFiles/native-render.dir/JniImp.cpp.o	283aa8e331bd4528
+2	821	1611747073	CMakeFiles/native-render.dir/sample/TriangleSample.cpp.o	3de5fdee2fe6f80e
+11	841	1611747073	CMakeFiles/native-render.dir/util/GLUtils.cpp.o	8eb2cefad928d669
+841	994	1611747073	/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/build/intermediates/cmake/debug/obj/arm64-v8a/libnative-render.so	14baea9ee28ebabc
+2	546	1611747488	CMakeFiles/native-render.dir/util/GLUtils.cpp.o	8eb2cefad928d669
+546	650	1611747488	/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/build/intermediates/cmake/debug/obj/arm64-v8a/libnative-render.so	14baea9ee28ebabc
+2	495	1611749483	CMakeFiles/native-render.dir/sample/TriangleSample.cpp.o	3de5fdee2fe6f80e
+495	623	1611749483	/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/build/intermediates/cmake/debug/obj/arm64-v8a/libnative-render.so	14baea9ee28ebabc
+1	316	1611749553	CMakeFiles/native-render.dir/sample/TriangleSample.cpp.o	3de5fdee2fe6f80e
+316	392	1611749553	/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/build/intermediates/cmake/debug/obj/arm64-v8a/libnative-render.so	14baea9ee28ebabc

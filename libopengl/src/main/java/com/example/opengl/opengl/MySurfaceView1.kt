@@ -1,10 +1,10 @@
-package com.example.view.opengl
+package com.example.opengl.opengl
 
 import android.content.Context
 import android.opengl.GLSurfaceView
-import com.example.view.opengl.render.MyRender
+import com.example.opengl.opengl.render.MyRender
 
-class MySurfaceView(context: Context) : GLSurfaceView(context) {
+class MySurfaceView1(context: Context) : GLSurfaceView(context) {
 
     private val myRender = MyRender()
 

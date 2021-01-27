@@ -78,7 +78,7 @@
 /// @ingroup core
 ///////////////////////////////////////////////////////////////////////////////////
 
-#include "detail/_fixes.hpp"
+/*#include "detail/_fixes.hpp"
 
 #pragma once
 
@@ -114,4 +114,4 @@
 #include "geometric.hpp"
 #include "matrix.hpp"
 #include "vector_relational.hpp"
-#include "integer.hpp"
+#include "integer.hpp"*/

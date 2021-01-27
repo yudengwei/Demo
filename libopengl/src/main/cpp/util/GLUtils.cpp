@@ -12,24 +12,26 @@ GLuint GLUtils::LoadShader(GLenum shaderType, const char *pSource) {
     GLuint shader;
     FUN_BEGIN_TIME("GLUtils::LoadShader")
     shader = glCreateShader(shaderType);
-    if (shader) {
-        glShaderSource(shader, 1, &pSource, NULL);
-        glCompileShader(shader);
-        GLint compiled = 0;
-        glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
-        if (!compiled) {
-            GLint infoLen = 0;
-            glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infoLen);
-            if (infoLen) {
-                char* buf = (char*) malloc((size_t)infoLen);
-                if (buf) {
-                    glGetShaderInfoLog(shader, infoLen, NULL, buf);
-                    LOGCATE("GLUtils::LoadShader Could not compile shader %d:\n%s\n", shaderType, buf);
-                    free(buf);
-                }
-                glDeleteShader(shader);
-                shader = 0;
+    if (!shader) {
+        CheckGLError("glCreateShader");
+        return 0;
+    }
+    glShaderSource(shader, 1, &pSource, NULL);
+    glCompileShader(shader);
+    GLint compiled = 0;
+    glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
+    if (!compiled) {
+        GLint infoLen = 0;
+        glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infoLen);
+        if (infoLen) {
+            char* buf = (char*) malloc((size_t)infoLen);
+            if (buf) {
+                glGetShaderInfoLog(shader, infoLen, NULL, buf);
+                LOGCATE("GLUtils::LoadShader Could not compile shader %d:\n%s\n", shaderType, buf);
+                free(buf);
             }
+            glDeleteShader(shader);
+            shader = 0;
         }
     }
     FUN_END_TIME("GLUtils::LoadShader")
@@ -42,6 +44,7 @@ GLuint GLUtils::CreateProgram(const char *pVertexShaderSource, const char *pFrag
 
 GLuint GLUtils::CreateProgram(const char *pVertexShaderSource, const char *pFragShaderSource, GLuint &vertexShaderHandle, GLuint &fragShaderHandle) {
     GLuint program = 0;
+    LOGCATE("pVertexShaderSource, %s", pVertexShaderSource);
     FUN_BEGIN_TIME("GLUtils::CreateProgram")
     vertexShaderHandle = LoadShader(GL_VERTEX_SHADER, pVertexShaderSource);
     if (!vertexShaderHandle) return program;

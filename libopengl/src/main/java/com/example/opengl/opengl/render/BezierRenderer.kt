@@ -1,9 +1,9 @@
-package com.example.view.opengl.render
+package com.example.opengl.opengl.render
 
 import android.opengl.GLES20
 import android.opengl.GLSurfaceView
 import android.opengl.Matrix
-import com.example.view.opengl.flatgraphics.BezierCurve
+import com.example.opengl.opengl.flatgraphics.BezierCurve
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 

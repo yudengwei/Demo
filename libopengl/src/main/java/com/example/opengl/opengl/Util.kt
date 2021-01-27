@@ -1,11 +1,12 @@
-package com.example.view.opengl
+package com.example.opengl.opengl
 
 import android.opengl.GLES20
 import android.opengl.GLES20.GL_COMPILE_STATUS
 import android.opengl.GLES20.glDeleteShader
+import android.opengl.GLES30
 import androidx.annotation.RawRes
 import com.example.base.App
-import com.example.view.opengl.flatgraphics.BezierCurve
+import com.example.opengl.opengl.flatgraphics.BezierCurve
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStream
@@ -40,7 +41,7 @@ fun IntArray.toIntBuff() : IntBuffer {
  */
 fun loadShader(type: Int, shaderCode: String?): Int {
     //根据不同type创建Id， 为0时则创建失败
-    val shaderId = GLES20.glCreateShader(type)
+    val shaderId = GLES30.glCreateShader(type)
     return if (shaderId == 0) 0 else {
         GLES20.glShaderSource(shaderId, shaderCode)
         GLES20.glCompileShader(shaderId)
@@ -80,8 +81,8 @@ fun readTextFileFromResource(resourceId: Int): String {
 }
 
 fun buildProgram(@RawRes vertexId: Int, @RawRes fragId : Int) : Int{
-    val vertex = loadShader(GLES20.GL_VERTEX_SHADER, readTextFileFromResource(vertexId))
-    val fragment = loadShader(GLES20.GL_FRAGMENT_SHADER, readTextFileFromResource(fragId))
+    val vertex = loadShader(GLES30.GL_VERTEX_SHADER, readTextFileFromResource(vertexId))
+    val fragment = loadShader(GLES30.GL_FRAGMENT_SHADER, readTextFileFromResource(fragId))
     val programId = GLES20.glCreateProgram()
     GLES20.glAttachShader(programId, vertex)
     GLES20.glAttachShader(programId, fragment)

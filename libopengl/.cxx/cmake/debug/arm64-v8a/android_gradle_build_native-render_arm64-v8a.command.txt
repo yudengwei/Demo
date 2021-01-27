@@ -1,0 +1,7 @@
+Executable : /Users/dengwei.yu.o/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja
+arguments : 
+-C
+/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/.cxx/cmake/debug/arm64-v8a
+native-render
+jvmArgs : 
+

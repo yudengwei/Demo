@@ -1,4 +1,4 @@
-package com.example.view.opengl
+package com.example.opengl.opengl
 
 import android.opengl.GLES20
 

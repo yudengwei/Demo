@@ -46,6 +46,7 @@ class MainActivity : AppCompatActivity() {
                 bubbleLayout.post { addHeart() }
             }
         }, 0, 200)
+
     }
 
     fun onShake(view: View) {
@@ -69,6 +70,7 @@ class MainActivity : AppCompatActivity() {
                 //循环播放数次
             .interpolator(CycleInterpolator(5f))
             .start()
+
     }
 
     fun onBounce(view: View) {

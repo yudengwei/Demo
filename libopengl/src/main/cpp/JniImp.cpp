@@ -15,7 +15,9 @@ extern "C" {
 JNIEXPORT void JNICALL native_init(JNIEnv *env, jobject instance, jstring vertex, jstring frag) {
     const char* c_vertex = env->GetStringUTFChars(vertex, JNI_FALSE);
     const char* c_frag = env->GetStringUTFChars(frag, JNI_FALSE);
-    MyGLRenderContext::GetInstance()->Init(c_vertex);
+    MyGLRenderContext::GetInstance()->Init(c_vertex, c_frag);
+    env->ReleaseStringUTFChars(vertex, c_vertex);
+    env->ReleaseStringUTFChars(frag, c_frag);
 }
 
 JNIEXPORT void JNICALL native_onSurfaceCreated(JNIEnv *env, jobject instance) {
@@ -39,7 +41,7 @@ JNIEXPORT void JNICALL native_unInit(JNIEnv *env, jobject instance) {
 #endif
 
 static JNINativeMethod g_RenderMethods[] = {
-        {"native_init", "()V", (void *)(native_init)},
+        {"native_init", "(Ljava/lang/String;Ljava/lang/String;)V", (void *)(native_init)},
         {"native_onSurfaceCreated", "()V", (void *)(native_onSurfaceCreated)},
         {"native_onSurfaceChanged", "(II)V", (void *)(native_onSurfaceChanged)},
         {"native_onDrawFrame", "()V", (void *)(native_onDrawFrame)},

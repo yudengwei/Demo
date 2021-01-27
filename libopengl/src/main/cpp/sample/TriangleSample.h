@@ -15,7 +15,10 @@ public:
 
     virtual void Draw(int screenW, int screenH);
 
+    virtual void OnSizeChange(int width, int height);
+
     virtual void Destroy();
+
 };
 
 

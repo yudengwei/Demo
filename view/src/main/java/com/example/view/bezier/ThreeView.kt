@@ -8,7 +8,10 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
 
-class ThreeView @JvmOverloads constructor(context: Context, attributeSet: AttributeSet? = null, defStyleAttr: Int = 0) : View(context, attributeSet, defStyleAttr) {
+class ThreeView @JvmOverloads constructor(context: Context, attributeSet: AttributeSet? = null, defStyleAttr: Int = 0)
+    : View(context, attributeSet, defStyleAttr) {
+
+    private var mBigListener : BigListener? = null
 
     private val mPaint = Paint().also {
         it.isAntiAlias = true
@@ -43,6 +46,7 @@ class ThreeView @JvmOverloads constructor(context: Context, attributeSet: Attrib
     }
 
     private val mRadius = 200
+    private val mBigRadius = 100
 
     private var mIsShrink = false
     private var mIsRunning = false
@@ -79,6 +83,9 @@ class ThreeView @JvmOverloads constructor(context: Context, attributeSet: Attrib
             }
 
             override fun onAnimationEnd(p0: Animator?) {
+                mBigListener?.let {
+                    it.bigAnimatorEnd()
+                }
                 for (i in mInitPoints.indices) {
                     mInitPoints[i].x = mPoints[i].x
                     mInitPoints[i].y = mPoints[i].y
@@ -156,7 +163,7 @@ class ThreeView @JvmOverloads constructor(context: Context, attributeSet: Attrib
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         mCenterPoint.x = w / 2
-        mCenterPoint.y = mCenterPoint.x
+        mCenterPoint.y = 500
 
         setInitialPoints()
     }
@@ -266,48 +273,48 @@ class ThreeView @JvmOverloads constructor(context: Context, attributeSet: Attrib
                 var endValueY = 0
                 when (it) {
                     0 -> {
-                        endValueY = if (!mIsShrink) p1[it].y - mRadius else p1[it].y + mRadius
+                        endValueY = if (!mIsShrink) p1[it].y - mBigRadius else p1[it].y + mBigRadius
                     }
                     1 -> {
-                        endValueX = if (!mIsShrink) p1[it].x + mRadius / 2 else p1[it].x - mRadius / 2
-                        endValueY = if (!mIsShrink) p1[it].y - mRadius else p1[it].y + mRadius
+                        endValueX = if (!mIsShrink) p1[it].x + mBigRadius / 2 else p1[it].x - mBigRadius / 2
+                        endValueY = if (!mIsShrink) p1[it].y - mBigRadius else p1[it].y + mBigRadius
                     }
                     2 -> {
-                        endValueX = if (!mIsShrink) p1[it].x + mRadius else p1[it].x - mRadius
-                        endValueY = if (!mIsShrink) p1[it].y - mRadius / 2 else p1[it].y + mRadius / 2
+                        endValueX = if (!mIsShrink) p1[it].x + mBigRadius else p1[it].x - mBigRadius
+                        endValueY = if (!mIsShrink) p1[it].y - mBigRadius / 2 else p1[it].y + mBigRadius / 2
                     }
                     3 -> {
-                        endValueX = if (!mIsShrink) p1[it].x + mRadius else p1[it].x - mRadius
+                        endValueX = if (!mIsShrink) p1[it].x + mBigRadius else p1[it].x - mBigRadius
                     }
                     4 -> {
-                        endValueX = if (!mIsShrink) p1[it].x + mRadius else p1[it].x - mRadius
-                        endValueY = if (!mIsShrink) p1[it].y + mRadius / 2 else p1[it].y - mRadius / 2
+                        endValueX = if (!mIsShrink) p1[it].x + mBigRadius else p1[it].x - mBigRadius
+                        endValueY = if (!mIsShrink) p1[it].y + mBigRadius / 2 else p1[it].y - mBigRadius / 2
                     }
                     5 -> {
-                        endValueX = if (!mIsShrink) p1[it].x + mRadius / 2 else p1[it].x - mRadius / 2
-                        endValueY = if (!mIsShrink) p1[it].y + mRadius else p1[it].y - mRadius
+                        endValueX = if (!mIsShrink) p1[it].x + mBigRadius / 2 else p1[it].x - mBigRadius / 2
+                        endValueY = if (!mIsShrink) p1[it].y + mBigRadius else p1[it].y - mBigRadius
                     }
                     6 -> {
-                        endValueY = if (!mIsShrink) p1[it].y + mRadius else p1[it].y - mRadius
+                        endValueY = if (!mIsShrink) p1[it].y + mBigRadius else p1[it].y - mBigRadius
                     }
                     7 -> {
-                        endValueX = if (!mIsShrink) p1[it].x - mRadius / 2 else p1[it].x + mRadius / 2
-                        endValueY = if (!mIsShrink) p1[it].y + mRadius else p1[it].y - mRadius
+                        endValueX = if (!mIsShrink) p1[it].x - mBigRadius / 2 else p1[it].x + mBigRadius / 2
+                        endValueY = if (!mIsShrink) p1[it].y + mBigRadius else p1[it].y - mBigRadius
                     }
                     8 -> {
-                        endValueX = if (!mIsShrink) p1[it].x - mRadius else p1[it].x + mRadius
-                        endValueY = if (!mIsShrink) p1[it].y + mRadius / 2 else p1[it].y - mRadius / 2
+                        endValueX = if (!mIsShrink) p1[it].x - mBigRadius else p1[it].x + mBigRadius
+                        endValueY = if (!mIsShrink) p1[it].y + mBigRadius / 2 else p1[it].y - mBigRadius / 2
                     }
                     9 -> {
-                        endValueX = if (!mIsShrink) p1[it].x - mRadius else p1[it].x + mRadius
+                        endValueX = if (!mIsShrink) p1[it].x - mBigRadius else p1[it].x + mBigRadius
                     }
                     10 -> {
-                        endValueX = if (!mIsShrink) p1[it].x - mRadius else p1[it].x + mRadius
-                        endValueY = if (!mIsShrink) p1[it].y - mRadius / 2 else p1[it].y + mRadius / 2
+                        endValueX = if (!mIsShrink) p1[it].x - mBigRadius else p1[it].x + mBigRadius
+                        endValueY = if (!mIsShrink) p1[it].y - mBigRadius / 2 else p1[it].y + mBigRadius / 2
                     }
                     11 -> {
-                        endValueX = if (!mIsShrink) p1[it].x - mRadius / 2 else p1[it].x + mRadius / 2
-                        endValueY = if (!mIsShrink) p1[it].y - mRadius else p1[it].y + mRadius
+                        endValueX = if (!mIsShrink) p1[it].x - mBigRadius / 2 else p1[it].x + mBigRadius / 2
+                        endValueY = if (!mIsShrink) p1[it].y - mBigRadius else p1[it].y + mBigRadius
                     }
                 }
                 val x = (p1[it].x + p0 * (endValueX - p1[it].x)).toInt()
@@ -315,6 +322,13 @@ class ThreeView @JvmOverloads constructor(context: Context, attributeSet: Attrib
                 Point(x, y)
             }
         }
+    }
 
+    fun setListener(bigListener : BigListener) {
+        this.mBigListener = bigListener
+    }
+
+    interface BigListener {
+        fun bigAnimatorEnd()
     }
 }
