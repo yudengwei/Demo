@@ -25,6 +25,7 @@ public:
     void OnDrawFrame();
     void DestroyInstance();
     void Init(const char* vertex, const char* frag);
+    void SetImageData(int format, int imageWidth, int imageHeight, uint8_t *pData);
 
 private:
     static MyGLRenderContext *m_pContext;

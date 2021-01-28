@@ -39,7 +39,7 @@ GLuint GLUtils::LoadShader(GLenum shaderType, const char *pSource) {
 }
 
 GLuint GLUtils::CreateProgram(const char *pVertexShaderSource, const char *pFragShaderSource) {
-
+return 0;
 }
 
 GLuint GLUtils::CreateProgram(const char *pVertexShaderSource, const char *pFragShaderSource, GLuint &vertexShaderHandle, GLuint &fragShaderHandle) {

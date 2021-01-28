@@ -7,6 +7,7 @@
 
 #include "stdint.h"
 #include <GLES3/gl3.h>
+#include "ImageDef.h"
 
 #define MATH_PI 3.1415926535897932384626433832802
 
@@ -68,6 +69,7 @@ public:
     virtual void Draw(int screenW, int screenH) = 0;
     virtual void OnSizeChange(int width, int height) = 0;
     virtual void Destroy() = 0;
+    virtual void LoadImage(NativeImage *pImage){};
 
 protected:
     GLuint m_VertexShader;

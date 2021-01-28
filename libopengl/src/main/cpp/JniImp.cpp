@@ -36,6 +36,15 @@ JNIEXPORT void JNICALL native_unInit(JNIEnv *env, jobject instance) {
     MyGLRenderContext::GetInstance()->DestroyInstance();
 }
 
+JNIEXPORT void JNICALL native_setImageData(JNIEnv *env, jobject instance, jint format, jint imageWidth, jint imageHeight, jbyteArray byteData) {
+    int len = env->GetArrayLength(byteData);
+    uint8_t* buf = new uint8_t[len];
+    env->GetByteArrayRegion(byteData, 0, len, reinterpret_cast<jbyte*>(buf));
+    MyGLRenderContext::GetInstance()->SetImageData(format, imageWidth, imageHeight, buf);
+    delete[] buf;
+    env->DeleteLocalRef(byteData);
+}
+
 #ifdef __cplusplus
 }
 #endif
@@ -45,7 +54,8 @@ static JNINativeMethod g_RenderMethods[] = {
         {"native_onSurfaceCreated", "()V", (void *)(native_onSurfaceCreated)},
         {"native_onSurfaceChanged", "(II)V", (void *)(native_onSurfaceChanged)},
         {"native_onDrawFrame", "()V", (void *)(native_onDrawFrame)},
-        {"native_unInit","()V", (void *)(native_unInit)}
+        {"native_unInit","()V", (void *)(native_unInit)},
+        {"native_setImageData","(III[B)V",(void *)(native_setImageData)},
 };
 
 static int RegisterNativeMethods(JNIEnv *env, const char *className, JNINativeMethod *methods, int methodNum) {

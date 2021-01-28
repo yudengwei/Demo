@@ -5,6 +5,8 @@
 #include "MyGLRenderContext.h"
 #include "LogUtil.h"
 #include "TriangleSample.h"
+#include "TextureMapSample.h"
+#include "ImageDef.h"
 
 MyGLRenderContext* MyGLRenderContext::m_pContext = nullptr;
 
@@ -26,6 +28,8 @@ MyGLRenderContext::~MyGLRenderContext()
 
 void MyGLRenderContext::OnSurfaceCreated() {
     LOGCATE("MyGLRenderContext::OnSurfaceCreated");
+    //只有在这里调用才有效
+    glClearColor(1.0, 1.0, 0.0, 1.0);
 }
 
 void MyGLRenderContext::OnSurfaceChanged(int width, int height) {
@@ -41,7 +45,7 @@ void MyGLRenderContext::OnSurfaceChanged(int width, int height) {
 void MyGLRenderContext::OnDrawFrame() {
     LOGCATE("MyGLRenderContext::OnDrawFrame");
     if (m_pCurSample != nullptr) {
-        m_pCurSample->Draw(0, 0);
+        m_pCurSample->Draw(m_ScreenW, m_ScreenH);
     }
 }
 
@@ -67,6 +71,31 @@ MyGLRenderContext *MyGLRenderContext::GetInstance()
 }
 
 void MyGLRenderContext::Init(const char* vertex, const char* frag) {
-    m_pCurSample = new TriangleSample();
+    m_pCurSample = new TextureMapSample();
     m_pCurSample->Init(vertex, frag);
+}
+
+void MyGLRenderContext::SetImageData(int format, int imageWidth, int imageHeight, uint8_t *pData) {
+    LOGCATE("MyGLRenderContext::SetImageData format=%d, width=%d, height=%d, pData=%p", format, imageWidth, imageHeight, pData);
+    NativeImage nativeImage;
+    nativeImage.format = format;
+    nativeImage.width = imageWidth;
+    nativeImage.height = imageHeight;
+    nativeImage.ppPlane[0] = pData;
+
+    switch (format) {
+        case IMAGE_FORMAT_NV12:
+        case IMAGE_FORMAT_NV21:
+            nativeImage.ppPlane[1] = nativeImage.ppPlane[0] + imageWidth * imageHeight;
+            break;
+        case IMAGE_FORMAT_I420:
+            nativeImage.ppPlane[1] = nativeImage.ppPlane[0] + imageWidth * imageHeight;
+            nativeImage.ppPlane[2] = nativeImage.ppPlane[1] + imageWidth * imageHeight / 4;
+            break;
+        default:
+            break;
+    }
+    if (m_pCurSample) {
+        m_pCurSample->LoadImage(&nativeImage);
+    }
 }

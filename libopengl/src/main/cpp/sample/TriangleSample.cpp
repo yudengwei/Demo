@@ -21,6 +21,15 @@ void TriangleSample::Init(const char* vertex, const char* frag) {
     if (m_ProgramObj == 0) {
         return;
     }
+
+}
+
+void TriangleSample::OnSizeChange(int width, int height) {
+    LOGCATE("TriangleSample::OnSizeChange");
+}
+
+void TriangleSample::Draw(int screenW, int screenH) {
+    glClear(GL_COLOR_BUFFER_BIT);
     GLfloat vVertices[] = {
             0.0f,0.5f,0.0f,
             -0.5f,-0.5f,0.0f,
@@ -29,17 +38,8 @@ void TriangleSample::Init(const char* vertex, const char* frag) {
     glUseProgram(m_ProgramObj);
     glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,0,vVertices);
     glEnableVertexAttribArray(0);
-}
-
-void TriangleSample::OnSizeChange(int width, int height) {
-    LOGCATE("TriangleSample::OnSizeChange");
-}
-
-void TriangleSample::Draw(int screenW, int screenH) {
-    glClear(GL_STENCIL_BUFFER_BIT | GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glClearColor(1.0, 0.0, 0.0, 1.0);
     glDrawArrays(GL_TRIANGLES, 0, 3);
-    //glUseProgram(GL_NONE);
+    glUseProgram(GL_NONE);
 }
 
 void TriangleSample::Destroy() {

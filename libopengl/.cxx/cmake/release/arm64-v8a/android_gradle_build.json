@@ -26,6 +26,11 @@
           "workingDirectoryOrdinal": 0
         },
         {
+          "src": "/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/sample/TextureMapSample.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
           "src": "/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/sample/TriangleSample.cpp",
           "flagsOrdinal": 1,
           "workingDirectoryOrdinal": 0

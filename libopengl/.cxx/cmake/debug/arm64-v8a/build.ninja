@@ -63,6 +63,13 @@ build CMakeFiles/native-render.dir/JniImp.cpp.o: CXX_COMPILER__native-render /Us
   INCLUDES = -I/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/render -I/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/glm -I/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/sample -I/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/util
   OBJECT_DIR = CMakeFiles/native-render.dir
   OBJECT_FILE_DIR = CMakeFiles/native-render.dir
+build CMakeFiles/native-render.dir/sample/TextureMapSample.cpp.o: CXX_COMPILER__native-render /Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/sample/TextureMapSample.cpp || cmake_object_order_depends_target_native-render
+  DEFINES = -Dnative_render_EXPORTS
+  DEP_FILE = CMakeFiles/native-render.dir/sample/TextureMapSample.cpp.o.d
+  FLAGS = -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -std=c++11 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC
+  INCLUDES = -I/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/render -I/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/glm -I/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/sample -I/Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/util
+  OBJECT_DIR = CMakeFiles/native-render.dir
+  OBJECT_FILE_DIR = CMakeFiles/native-render.dir/sample
 build CMakeFiles/native-render.dir/sample/TriangleSample.cpp.o: CXX_COMPILER__native-render /Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/src/main/cpp/sample/TriangleSample.cpp || cmake_object_order_depends_target_native-render
   DEFINES = -Dnative_render_EXPORTS
   DEP_FILE = CMakeFiles/native-render.dir/sample/TriangleSample.cpp.o.d
@@ -92,7 +99,7 @@ build CMakeFiles/native-render.dir/render/MyGLRenderContext.cpp.o: CXX_COMPILER_
 #############################################
 # Link the shared library /Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/build/intermediates/cmake/debug/obj/arm64-v8a/libnative-render.so
 
-build /Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/build/intermediates/cmake/debug/obj/arm64-v8a/libnative-render.so: CXX_SHARED_LIBRARY_LINKER__native-render CMakeFiles/native-render.dir/JniImp.cpp.o CMakeFiles/native-render.dir/sample/TriangleSample.cpp.o CMakeFiles/native-render.dir/util/GLUtils.cpp.o CMakeFiles/native-render.dir/render/MyGLRenderContext.cpp.o | /Users/dengwei.yu.o/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/lib/aarch64-linux-android/21/liblog.so
+build /Users/dengwei.yu.o/AndroidStudioProjects/Demo/libopengl/build/intermediates/cmake/debug/obj/arm64-v8a/libnative-render.so: CXX_SHARED_LIBRARY_LINKER__native-render CMakeFiles/native-render.dir/JniImp.cpp.o CMakeFiles/native-render.dir/sample/TextureMapSample.cpp.o CMakeFiles/native-render.dir/sample/TriangleSample.cpp.o CMakeFiles/native-render.dir/util/GLUtils.cpp.o CMakeFiles/native-render.dir/render/MyGLRenderContext.cpp.o | /Users/dengwei.yu.o/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/lib/aarch64-linux-android/21/liblog.so
   LANGUAGE_COMPILE_FLAGS = -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -std=c++11 -frtti -fexceptions -O0 -fno-limit-debug-info
   LINK_FLAGS = -Wl,--exclude-libs,libgcc.a -Wl,--exclude-libs,libgcc_real.a -Wl,--exclude-libs,libatomic.a -static-libstdc++ -Wl,--build-id -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments
   LINK_LIBRARIES = -llog -lEGL -lGLESv3 -latomic -lm

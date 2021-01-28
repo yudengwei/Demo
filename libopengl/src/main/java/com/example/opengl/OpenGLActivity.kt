@@ -10,7 +10,7 @@ class OpenGLActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        myRender = MyRender()
+        myRender = MyRender(context = this)
         setContentView(MySurfaceView(this, mRender = myRender))
     }
 

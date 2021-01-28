@@ -17,4 +17,6 @@ class NativeRender{
     external fun native_onDrawFrame()
 
     external fun native_unInit()
+
+    external fun native_setImageData(foramt : Int, imageWidth : Int, height : Int, byteData : ByteArray)
 }
